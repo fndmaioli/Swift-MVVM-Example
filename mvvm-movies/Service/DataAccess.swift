@@ -71,6 +71,29 @@ struct DataAccess {
         dataTask.resume()
     }
     
+    static func getMovies(named name: String, completionHandler completion: @escaping (ListMovie?) -> Void) {
+        
+        let urlName = name.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        
+        var request = URLRequest(url: URL(string: "https://api.themoviedb.org/3/search/movie?api_key=\(apiKey)&language=en-US&query=\(urlName)&page=1&include_adult=false")!)
+        request.httpMethod = "GET"
+        
+        let session = URLSession.shared
+        let dataTask = session.dataTask(with: request, completionHandler: { data, response, error -> Void in
+            guard let error = error
+                else {
+                    let listMovie = try? JSONDecoder().decode(ListMovie.self, from: data!)
+                    completion(listMovie)
+                    return
+            }
+            print(error.localizedDescription)
+            completion(nil)
+            return
+        })
+        dataTask.resume()
+    }
+    
+    
     
     
 }

@@ -12,7 +12,8 @@ class RootViewModel {
     private var helloMVVM: HelloWorldExample?
     private var listPopularMovies: [Movie]?
     private var listNowPlayingMovies: [Movie]?
-    
+    private var listSearchMovies: [Movie]?
+
     init(){
         helloMVVM = HelloWorldExample(name: "World")
     }
@@ -30,10 +31,12 @@ class RootViewModel {
             self.listNowPlayingMovies = result
         }
     }
-        
-    func getHelloName() -> String {
-        guard let helloMVVM = helloMVVM else { return "" }
-        return helloMVVM.name
+    
+    func fetchSearchMovies(name: String){
+        DataAccess.getMovies(named: name, completionHandler: { (listSearch) in
+            let result = listSearch?.results ?? []
+            self.listSearchMovies = result
+            })
     }
     
     

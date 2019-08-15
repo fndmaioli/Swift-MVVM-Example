@@ -36,6 +36,16 @@ class RootView: UIViewController {
                 print(m.title ?? "")
             }
         }
+        
+        DataAccess.getMovies(named: "Fight Club") { (ListMovie) in
+            let movies = ListMovie?.results
+            
+            for m in movies! {
+                print(m.title ?? "")
+            }
+        }
+        
+        
     }
     
 }
