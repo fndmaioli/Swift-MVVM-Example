@@ -9,42 +9,14 @@ import UIKit
 
 class RootView: UIViewController {
     
-    var hello = RootViewModel()
+    
+    @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
-        print("Hello " + hello.getHelloName())
-        
-        DataAccess.getPopularMovies { (ListMovie) in
-            let movies = ListMovie?.results
-            
-            for m in movies! {
-                print(m.title ?? "")
-            }
-        }
-        
-        DataAccess.getDetailsMovie(fromId: 466272) { (MovieDetail) in
-            print(MovieDetail?.overview ?? "")
-        }
-        
-        DataAccess.getNowPlayingMovies { (ListMovie) in
-            let movies = ListMovie?.results
-            
-            for m in movies! {
-                print(m.title ?? "")
-            }
-        }
-        
-        DataAccess.getMovies(named: "Fight Club") { (ListMovie) in
-            let movies = ListMovie?.results
-            
-            for m in movies! {
-                print(m.title ?? "")
-            }
-        }
-        
+                
         
     }
     
