@@ -16,9 +16,6 @@ struct ListMovie: Codable {
     }
 }
 
-// MARK: - Dates
-
-
 // MARK: - Result
 struct Movie: Codable {
     let voteCount, id: Int?
@@ -32,15 +29,15 @@ struct Movie: Codable {
     let overview, releaseDate: String?
     
     enum CodingKeys: String, CodingKey {
-        case voteCount
+        case voteCount = "vote_count"
         case id, video
-        case voteAverage
+        case voteAverage = "vote_average"
         case title, popularity
-        case posterPath
-        case genreIDS
-        case backdropPath
+        case genreIDS = "genre_ids"
+        case backdropPath = "backdrop_path"
         case overview
-        case releaseDate
+        case releaseDate = "release_date"
+        case posterPath = "poster_path"
     }
 }
 

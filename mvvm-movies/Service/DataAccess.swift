@@ -30,7 +30,6 @@ struct DataAccess {
         })
         dataTask.resume()
     }
-    
    
     static func getNowPlayingMovies(fromPage page: Int = 1, completionHandler completion: @escaping (ListMovie?) -> Void) {
         var request = URLRequest(url: URL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)&language=en-US&page=\(page)")!)
