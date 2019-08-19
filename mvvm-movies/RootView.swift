@@ -10,8 +10,34 @@ import UIKit
 class RootView: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
-    
     private var viewModel : RootViewModel?
+    
+    let searchController = UISearchController(searchResultsController: nil)
+
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        let searchBar = UISearchBar()
+        searchBar.sizeToFit()
+        
+        
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search Movie"
+        navigationItem.searchController = searchController
+        definesPresentationContext = true
+        navigationItem.hidesSearchBarWhenScrolling = false
+        
+        viewModel = RootViewModel()
+        viewModel?.downloadDelegate = self
+        
+        
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.backgroundColor = .white
+        
+    }
+    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
@@ -37,6 +63,7 @@ class RootView: UIViewController, UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "NowPlaying") as? NowPlayingTableViewCell else {return UITableViewCell()}
+            cell.detailSegueDelegate = self
             return cell
         } else {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "Popular") as? PopularTableViewCell else {return UITableViewCell()}
@@ -65,12 +92,45 @@ class RootView: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+//    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+//        if section == 0 {
+//            return "Now Playing"
+//        } else {
+//            return "Popular Movies"
+//        }
+    //    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        //        if section == 0 {
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 18))
+        view.backgroundColor = .white
+        let label = UILabel(frame: CGRect(x: 20, y: 20, width: 300, height: 50))
+        label.font = UIFont(name: ".SFUIText-Semibold", size: 17)
+        label.textColor = .black
+        view.addSubview(label)
+        
         if section == 0 {
-            return "Now Playing"
-        } else {
-            return "Popular Movies"
+            label.text = "Now Playing"
+            
+            let button = UIButton(frame: CGRect(x: view.frame.size.width - 80 - 10, y: 20, width: 80, height: 50))
+            button.setTitle("See All", for: .normal)
+            button.setTitleColor(.black, for: .normal)
+            view.addSubview(button)
+            
+            button.addTarget(self, action: #selector(seeAllButtonClick), for: .touchUpInside)
+            
         }
+        else if section == 1 {
+            label.text = "Popular Movies"
+
+        }
+        
+        return view
+        //        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 70
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -89,15 +149,8 @@ class RootView: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        viewModel = RootViewModel()
-        viewModel?.downloadDelegate = self
-        
-        tableView.dataSource = self
-        tableView.delegate = self
-        
+    @objc func seeAllButtonClick(_ sender: UIButton) {
+        print("see all clicked")
     }
     
 }
@@ -107,5 +160,23 @@ extension RootView: DownloadDelegate {
         DispatchQueue.main.async {
             self.tableView.reloadData()
         }
+    }
+}
+
+extension RootView: DetailMovieSegue {
+    func didNavigateDetail(movieId: Int) {
+        performSegue(withIdentifier: "detail", sender: movieId)
+    }
+}
+
+extension RootView: UISearchResultsUpdating {
+    
+    
+    
+    // MARK: - UISearchResultsUpdating Delegate
+    func updateSearchResults(for searchController: UISearchController) {
+        let searchBar = searchController.searchBar
+        
+        //filtro
     }
 }

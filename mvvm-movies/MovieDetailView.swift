@@ -10,6 +10,7 @@ import UIKit
 
 class MovieDetailView: UIViewController {
     
+    @IBOutlet weak var detailScrollView: UIScrollView!
     @IBOutlet weak var cover: UIImageView!
     @IBOutlet weak var genres: UILabel!
     @IBOutlet weak var rating: UILabel!
@@ -21,9 +22,13 @@ class MovieDetailView: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         self.viewModel = DetailViewModel(id: self.id!)
-        
+        overview.sizeToFit()
+        viewModel?.downloadDelegate = self
+        setupMovieDetail()
+    }
+    
+    func setupMovieDetail() {
         guard let viewModel = self.viewModel else {return}
         movieTitle.text = viewModel.getTitle()
         rating.text = viewModel.getPopularity()
@@ -43,7 +48,19 @@ class MovieDetailView: UIViewController {
             }
         }
         
-        
     }
 
 }
+
+extension MovieDetailView : DownloadDelegate {
+    func didFinishDownload() {
+        
+        print("download finished moviedetail")
+        DispatchQueue.main.async {
+            self.setupMovieDetail()
+        }
+    }
+    
+    
+}
+

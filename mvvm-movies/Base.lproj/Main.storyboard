@@ -115,11 +115,21 @@
                                                         </collectionViewCell>
                                                     </cells>
                                                 </collectionView>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UC0-kO-PB3">
+                                                    <rect key="frame" x="15" y="314" width="384" height="1"/>
+                                                    <color key="backgroundColor" red="0.76862745098039209" green="0.76862745098039209" blue="0.76862745098039209" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="1" id="b2H-es-hSV"/>
+                                                    </constraints>
+                                                </view>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="p0j-Ft-RFw" firstAttribute="top" secondItem="UCx-9a-hfL" secondAttribute="top" id="BBb-kU-Gos"/>
+                                                <constraint firstAttribute="bottom" secondItem="UC0-kO-PB3" secondAttribute="bottom" id="Rhr-HT-kY3"/>
                                                 <constraint firstAttribute="trailing" secondItem="p0j-Ft-RFw" secondAttribute="trailing" id="Tap-2y-eHW"/>
+                                                <constraint firstItem="UC0-kO-PB3" firstAttribute="leading" secondItem="UCx-9a-hfL" secondAttribute="leading" constant="15" id="Use-eV-ZF7"/>
                                                 <constraint firstItem="p0j-Ft-RFw" firstAttribute="leading" secondItem="UCx-9a-hfL" secondAttribute="leading" id="kgh-p5-vzu"/>
+                                                <constraint firstAttribute="trailing" secondItem="UC0-kO-PB3" secondAttribute="trailing" constant="15" id="vak-pW-CWP"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="10" maxY="0.0"/>
@@ -219,7 +229,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ijf-VG-uAv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-664" y="84"/>
+            <point key="canvasLocation" x="-665.21739130434787" y="83.705357142857139"/>
         </scene>
         <!--Movie Details-->
         <scene sceneID="aKy-nO-BUJ">
@@ -241,14 +251,14 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="azx-4T-UsX">
-                                                <rect key="frame" x="20" y="259" width="374" height="507"/>
-                                                <mutableString key="text">Simba idolises his father, King Mufasa, and takes to heart his own royal destiny. But not everyone in the kingdom celebrates the new cub's arrival. Scar, Mufasa's brother—and former heir to the throne—has plans of his own. The battle for Pride Rock is ravaged with betrayal, tragedy and drama, ultimately resulting in Simba's exile. 
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="azx-4T-UsX">
+                                                <rect key="frame" x="20" y="259" width="374" height="267.5"/>
+                                                <string key="text">Simba idolises his father, King Mufasa, and takes to heart his own royal destiny. But not everyone in the kingdom celebrates the new cub's arrival. Scar, Mufasa's brother—and former heir to the throne—has plans of his own. The battle for Pride Rock is ravaged with betrayal, tragedy and drama, ultimately resulting in Simba's exile. 
 
 With help from a curious pair of newfound friends, Simba will have to figure out how to grow up and take back what is rightfully his.Simba idolises his father, King Mufasa, and takes to heart his own royal destiny. But not everyone in the kingdom celebrates the new cub's arrival. Scar, Mufasa's brother—and former heir to the throne—has plans of his own. 
 
-</mutableString>
-                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="14"/>
+</string>
+                                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="14"/>
                                                 <color key="textColor" red="0.50980392156862742" green="0.50980392156862742" blue="0.50980392156862742" alpha="0.84705882352941175" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
@@ -275,13 +285,13 @@ With help from a curious pair of newfound friends, Simba will have to figure out
                                                     <constraint firstAttribute="height" constant="194" id="tyF-O1-nw2"/>
                                                 </constraints>
                                             </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YV4-6y-tbP">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YV4-6y-tbP">
                                                 <rect key="frame" x="163" y="105" width="231" height="24"/>
                                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Genres" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SOC-qA-Bpm">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Genres" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SOC-qA-Bpm">
                                                 <rect key="frame" x="163" y="134" width="231" height="42"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" red="0.59215686274509804" green="0.59215686274509804" blue="0.59215686274509804" alpha="0.84705882352941175" colorSpace="calibratedRGB"/>
@@ -300,7 +310,6 @@ With help from a curious pair of newfound friends, Simba will have to figure out
                                             <constraint firstItem="xR7-m9-9KS" firstAttribute="leading" secondItem="kj8-Nc-TlD" secondAttribute="trailing" constant="5" id="W8g-KF-UC6"/>
                                             <constraint firstItem="9se-6q-bZC" firstAttribute="leading" secondItem="iUQ-lT-rrt" secondAttribute="leading" constant="20" id="a1R-pj-uuH"/>
                                             <constraint firstItem="kj8-Nc-TlD" firstAttribute="leading" secondItem="9Mt-h8-kUD" secondAttribute="trailing" constant="15" id="aYG-ag-sqC"/>
-                                            <constraint firstAttribute="bottom" secondItem="azx-4T-UsX" secondAttribute="bottom" constant="8" id="ac5-dk-apn"/>
                                             <constraint firstItem="azx-4T-UsX" firstAttribute="top" secondItem="9se-6q-bZC" secondAttribute="bottom" constant="8" id="e1U-3R-gaL"/>
                                             <constraint firstAttribute="trailing" secondItem="azx-4T-UsX" secondAttribute="trailing" constant="20" id="egs-wN-pLP"/>
                                             <constraint firstItem="azx-4T-UsX" firstAttribute="leading" secondItem="iUQ-lT-rrt" secondAttribute="leading" constant="20" id="hkF-iF-CTj"/>
@@ -336,6 +345,7 @@ With help from a curious pair of newfound friends, Simba will have to figure out
                     <navigationItem key="navigationItem" title="Movie Details" largeTitleDisplayMode="never" id="XRG-gG-vgp"/>
                     <connections>
                         <outlet property="cover" destination="9Mt-h8-kUD" id="YYK-9x-NBq"/>
+                        <outlet property="detailScrollView" destination="xML-4T-OSi" id="LkY-hQ-F2h"/>
                         <outlet property="genres" destination="SOC-qA-Bpm" id="aIy-Zu-gca"/>
                         <outlet property="movieTitle" destination="YV4-6y-tbP" id="p3n-b5-QT4"/>
                         <outlet property="overview" destination="azx-4T-UsX" id="OQh-lx-DqB"/>

@@ -41,8 +41,11 @@ class DetailViewModel {
     }
     
     public func getGenres() -> String {
-        //TODO
-        return "Genres"
+        guard let genres =  movieDetail?.genres else {return ""}
+        let genresString = genres.map { (genre) -> String in
+            return genre.name ?? ""
+            }.joined(separator: ", ")
+        return genresString 
     }
     
     public func getPopularity() -> String {

@@ -11,6 +11,22 @@ import UIKit
 class NowPlayingTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollectionViewDelegate {
     
     var viewModel : NowPlayingViewModel?
+    var detailSegueDelegate: DetailMovieSegue?
+    
+    
+    @IBOutlet weak var nowPlayingCollectionView: UICollectionView!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        viewModel = NowPlayingViewModel()
+        viewModel?.downloadDelegate = self
+        nowPlayingCollectionView.delegate = self
+        nowPlayingCollectionView.dataSource = self
+        
+        
+    }
+    
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 5
@@ -35,27 +51,25 @@ class NowPlayingTableViewCell: UITableViewCell, UICollectionViewDataSource, UICo
                 cell.cover.image = image
             }
         }
-
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let viewModel = self.viewModel else {return}
+        let movieID = viewModel.getMovieID(byIndexPath: indexPath.row)
+        
+        detailSegueDelegate?.didNavigateDetail(movieId: movieID)
         
     }
     
-    
-    @IBOutlet weak var nowPlayingCollectionView: UICollectionView!
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        
-        viewModel = NowPlayingViewModel()
-        viewModel?.downloadDelegate = self
-        
-        nowPlayingCollectionView.delegate = self
-        nowPlayingCollectionView.dataSource = self
-   }
 }
 
 protocol DownloadDelegate {
     func didFinishDownload()
+}
+
+protocol DetailMovieSegue {
+    func didNavigateDetail(movieId: Int)
 }
 
 extension NowPlayingTableViewCell : DownloadDelegate {
@@ -67,6 +81,4 @@ extension NowPlayingTableViewCell : DownloadDelegate {
             self.nowPlayingCollectionView.reloadData()
         }
     }
-    
-    
 }

@@ -39,5 +39,10 @@ class NowPlayingViewModel {
         let popularity =  String(format: "%.1f", nowPlayingList?[index].voteAverage ?? 100)
         return popularity
     }
+    
+    public func getMovieID(byIndexPath index: Int) -> Int {
+        guard let id =  nowPlayingList?[index].id else {return 0}
+        return id
+    }
 }
 
