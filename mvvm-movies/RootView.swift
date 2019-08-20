@@ -11,6 +11,7 @@ class RootView: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
     private var viewModel : RootViewModel?
+    @IBOutlet var activityIndicator: UIActivityIndicatorView!
     
     let searchController = UISearchController(searchResultsController: nil)
 
@@ -20,17 +21,29 @@ class RootView: UIViewController, UITableViewDelegate, UITableViewDataSource {
         let searchBar = UISearchBar()
         searchBar.sizeToFit()
         
+        activityIndicator.startAnimating()
+        tableView.isHidden = true
         
-        searchController.searchResultsUpdater = self
-        searchController.obscuresBackgroundDuringPresentation = false
+// TO-DO: Implement search results
+//        searchController.delegate = self
+//        searchController.searchResultsUpdater = searchController.searchResultsController as? MovieContainerView
+//        searchController.dimsBackgroundDuringPresentation = true
+//        searchController.obscuresBackgroundDuringPresentation = false
+//        definesPresentationContext = true
+//
+//        searchController.loadViewIfNeeded()
+//
+//        searchController.searchBar.delegate = searchController.searchResultsController as? MovieContainerView
+//        searchController.hidesNavigationBarDuringPresentation = false
+//        searchController.searchBar.sizeToFit()
         searchController.searchBar.placeholder = "Search Movie"
+
+        
         navigationItem.searchController = searchController
-        definesPresentationContext = true
         navigationItem.hidesSearchBarWhenScrolling = false
         
         viewModel = RootViewModel()
         viewModel?.downloadDelegate = self
-        
         
         tableView.dataSource = self
         tableView.delegate = self
@@ -81,7 +94,7 @@ class RootView: UIViewController, UITableViewDelegate, UITableViewDataSource {
             
             let imageUrl = URL(string: "https://image.tmdb.org/t/p/w500" + (imagePath))
             DispatchQueue.global(qos: .background).async {
-                let data = try! Data(contentsOf: imageUrl!)
+                guard let data = try? Data(contentsOf: imageUrl!) else {return}
                 DispatchQueue.main.async {
                     let image = UIImage(data: data)
                     cell.cover.image = image
@@ -92,16 +105,7 @@ class RootView: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-//    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-//        if section == 0 {
-//            return "Now Playing"
-//        } else {
-//            return "Popular Movies"
-//        }
-    //    }
-    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        //        if section == 0 {
         let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 18))
         view.backgroundColor = .white
         let label = UILabel(frame: CGRect(x: 20, y: 20, width: 300, height: 50))
@@ -126,7 +130,6 @@ class RootView: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
         
         return view
-        //        }
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -143,22 +146,25 @@ class RootView: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let movieId = sender as? Int {
-            if let movieDetailView = segue.destination as? MovieDetailView {
+            if let movieDetailView = segue.destination as? DetailView {
                 movieDetailView.id = movieId
             }
         }
     }
     
     @objc func seeAllButtonClick(_ sender: UIButton) {
-        print("see all clicked")
+        performSegue(withIdentifier: "seeAllNowPlaying", sender: nil)
     }
     
 }
+
 
 extension RootView: DownloadDelegate {
     func didFinishDownload() {
         DispatchQueue.main.async {
             self.tableView.reloadData()
+            self.tableView.isHidden = false
+            self.activityIndicator.isHidden = true
         }
     }
 }
@@ -169,14 +175,6 @@ extension RootView: DetailMovieSegue {
     }
 }
 
-extension RootView: UISearchResultsUpdating {
+extension RootView: UISearchControllerDelegate {
     
-    
-    
-    // MARK: - UISearchResultsUpdating Delegate
-    func updateSearchResults(for searchController: UISearchController) {
-        let searchBar = searchController.searchBar
-        
-        //filtro
-    }
 }

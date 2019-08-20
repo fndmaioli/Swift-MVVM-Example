@@ -1,38 +1,40 @@
 //
-//  NowPlayingTableViewCell.swift
+//  SeeAllNowPlayingView.swift
 //  mvvm-movies
 //
-//  Created by Rodrigo Giglio on 15/08/19.
+//  Created by Guilherme Piccoli on 20/08/19.
 //  Copyright © 2019 Guilherme Piccoli. All rights reserved.
 //
 
 import UIKit
 
-class NowPlayingTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollectionViewDelegate {
+class MovieListView: UIViewController {
     
-    var viewModel : MovieListViewModel?
-    var detailSegueDelegate: DetailMovieSegue?
-    
-    
-    @IBOutlet weak var nowPlayingCollectionView: UICollectionView!
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    @IBOutlet var resultsCountLabel: UILabel!
+    @IBOutlet var collectionView: UICollectionView!
+    private var viewModel: MovieListViewModel?
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
         viewModel = MovieListViewModel()
         viewModel?.downloadDelegate = self
-        nowPlayingCollectionView.delegate = self
-        nowPlayingCollectionView.dataSource = self
+        collectionView.dataSource = self
+        collectionView.delegate = self
     }
+}
+
+
+extension MovieListView: UICollectionViewDelegate,UICollectionViewDataSource {
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        return viewModel?.getMoviesCount() ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MovieCollectionViewCell", for: indexPath) as? MovieCollectionViewCell else {return UICollectionViewCell()}
-    
+        
         guard  let viewModel = self.viewModel else {return cell}
         cell.movieTitle.text = viewModel.getTitle(byIndexPath: indexPath.row)
         cell.rating.text = viewModel.getPopularity(byIndexPath: indexPath.row)
@@ -43,7 +45,7 @@ class NowPlayingTableViewCell: UITableViewCell, UICollectionViewDataSource, UICo
         
         let imageUrl = URL(string: "https://image.tmdb.org/t/p/w500" + (imagePath))
         DispatchQueue.global(qos: .background).async {
-            let data = try! Data(contentsOf: imageUrl!)
+            guard let data = try? Data(contentsOf: imageUrl!) else {return}
             DispatchQueue.main.async {
                 let image = UIImage(data: data)
                 cell.cover.image = image
@@ -56,24 +58,26 @@ class NowPlayingTableViewCell: UITableViewCell, UICollectionViewDataSource, UICo
         guard let viewModel = self.viewModel else {return}
         let movieID = viewModel.getMovieID(byIndexPath: indexPath.row)
         
-        detailSegueDelegate?.didNavigateDetail(movieId: movieID)
-        
+        performSegue(withIdentifier: "movieDetail", sender: movieID)
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let movieId = sender as? Int {
+            if let movieDetailView = segue.destination as? DetailView {
+                movieDetailView.id = movieId
+            }
+        }
+    }
+    
 }
 
-protocol DownloadDelegate {
-    func didFinishDownload()
-}
-
-protocol DetailMovieSegue {
-    func didNavigateDetail(movieId: Int)
-}
-
-extension NowPlayingTableViewCell : DownloadDelegate {
+extension MovieListView: DownloadDelegate {
     func didFinishDownload() {
-                
+        
         DispatchQueue.main.async {
-            self.nowPlayingCollectionView.reloadData()
+            self.collectionView.reloadData()
+            guard let viewModel = self.viewModel else {return}
+            self.resultsCountLabel.text = "Showing \(viewModel.getMoviesCount()) results"
         }
     }
 }

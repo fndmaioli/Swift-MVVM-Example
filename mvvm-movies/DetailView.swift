@@ -8,8 +8,10 @@
 
 import UIKit
 
-class MovieDetailView: UIViewController {
+class DetailView: UIViewController {
     
+    @IBOutlet var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet var imageActivityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var detailScrollView: UIScrollView!
     @IBOutlet weak var cover: UIImageView!
     @IBOutlet weak var genres: UILabel!
@@ -23,6 +25,12 @@ class MovieDetailView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.viewModel = DetailViewModel(id: self.id!)
+        
+        cover.layer.cornerRadius = 16
+        
+        activityIndicator.startAnimating()
+        imageActivityIndicator.startAnimating()
+
         overview.sizeToFit()
         viewModel?.downloadDelegate = self
         setupMovieDetail()
@@ -41,10 +49,11 @@ class MovieDetailView: UIViewController {
         
         let imageUrl = URL(string: "https://image.tmdb.org/t/p/w500" + (imagePath))
         DispatchQueue.global(qos: .background).async {
-            let data = try! Data(contentsOf: imageUrl!)
+            guard let data = try? Data(contentsOf: imageUrl!) else {return}
             DispatchQueue.main.async {
                 let image = UIImage(data: data)
                 self.cover.image = image
+                self.imageActivityIndicator.isHidden = true
             }
         }
         
@@ -52,12 +61,14 @@ class MovieDetailView: UIViewController {
 
 }
 
-extension MovieDetailView : DownloadDelegate {
+extension DetailView : DownloadDelegate {
     func didFinishDownload() {
         
         print("download finished moviedetail")
         DispatchQueue.main.async {
             self.setupMovieDetail()
+            self.activityIndicator.isHidden = true
+            self.detailScrollView.isHidden = false
         }
     }
     

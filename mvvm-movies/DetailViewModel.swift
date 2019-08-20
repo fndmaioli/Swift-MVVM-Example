@@ -20,6 +20,9 @@ class DetailViewModel {
     
     func fetchMovieDetail(withId id: Int){
         DataAccess.getDetailsMovie(fromId: id) { (movieDetail) in
+            
+            guard let movieDetail = movieDetail else {return}
+            
             self.movieDetail = movieDetail
             self.downloadDelegate?.didFinishDownload()
         }

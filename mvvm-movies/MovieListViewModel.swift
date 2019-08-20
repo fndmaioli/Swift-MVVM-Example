@@ -8,7 +8,7 @@
 
 import Foundation
 
-class NowPlayingViewModel {
+class MovieListViewModel {
     
     private var nowPlayingList : [Movie]?
     var downloadDelegate: DownloadDelegate?
@@ -43,6 +43,10 @@ class NowPlayingViewModel {
     public func getMovieID(byIndexPath index: Int) -> Int {
         guard let id =  nowPlayingList?[index].id else {return 0}
         return id
+    }
+    
+    public func getMoviesCount() -> Int {
+        return nowPlayingList?.count ?? 0
     }
 }
 

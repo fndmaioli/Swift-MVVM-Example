@@ -22,9 +22,14 @@ class RootViewModel {
     func fetchPopularMovies(){
         DataAccess.getPopularMovies { (listMovies) in
             let result = listMovies?.results ?? []
-            self.listPopularMovies = result
+            self.listPopularMovies = self.orderByRating(movieList: result)
+            
             self.downloadDelegate?.didFinishDownload()
         }
+    }
+    
+    func orderByRating(movieList: [Movie]) -> [Movie] {
+        return movieList.sorted(by: {$0.voteAverage! > $1.voteAverage!})
     }
     
     func fetchSearchMovies(name: String){
