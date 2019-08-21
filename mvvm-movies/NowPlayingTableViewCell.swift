@@ -59,6 +59,7 @@ class NowPlayingTableViewCell: UITableViewCell, UICollectionViewDataSource, UICo
         detailSegueDelegate?.didNavigateDetail(movieId: movieID)
         
     }
+
 }
 
 protocol DownloadDelegate {

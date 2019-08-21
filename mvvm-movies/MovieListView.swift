@@ -51,6 +51,7 @@ extension MovieListView: UICollectionViewDelegate,UICollectionViewDataSource {
                 cell.cover.image = image
             }
         }
+        
         return cell
     }
     
@@ -59,6 +60,11 @@ extension MovieListView: UICollectionViewDelegate,UICollectionViewDataSource {
         let movieID = viewModel.getMovieID(byIndexPath: indexPath.row)
         
         performSegue(withIdentifier: "movieDetail", sender: movieID)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        viewModel?.fetchNowPlayingMovies(for: indexPath)
+        print("\(indexPath.row) - \(indexPath.section)")
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

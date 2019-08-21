@@ -63,9 +63,7 @@ class DetailView: UIViewController {
 
 extension DetailView : DownloadDelegate {
     func didFinishDownload() {
-        
-        print("download finished moviedetail")
-        DispatchQueue.main.async {
+                DispatchQueue.main.async {
             self.setupMovieDetail()
             self.activityIndicator.isHidden = true
             self.detailScrollView.isHidden = false
