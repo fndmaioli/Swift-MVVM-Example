@@ -20,43 +20,52 @@ class RootViewModel {
     }
 
     func fetchPopularMovies(){
-        DataAccess.getPopularMovies { (listMovies) in
-            let result = listMovies?.results ?? []
-            self.listPopularMovies = self.orderByRating(movieList: result)
-            
-            self.downloadDelegate?.didFinishDownload()
+//        DataAccess.getPopularMovies { (listMovies) in
+//            let result = listMovies?.results ?? []
+//            self.listPopularMovies = self.orderByRating(movieList: result)
+//
+//            self.downloadDelegate?.didFinishDownload()
+//        }
+        
+        APIService().getPopularMovies { (array) in
+            if let movieList = array as? [Movie] {
+                self.listPopularMovies = self.orderByRating(movieList: movieList)
+                self.downloadDelegate?.didFinishDownload()
+            } else {
+                self.listPopularMovies = []
+            }
         }
     }
     
     func orderByRating(movieList: [Movie]) -> [Movie] {
-        return movieList.sorted(by: {$0.voteAverage! > $1.voteAverage!})
+        return movieList.sorted(by: {$0.rating.doubleValue > $1.rating.doubleValue})
     }
     
     func fetchSearchMovies(name: String){
-        DataAccess.getMovies(named: name, completionHandler: { (listSearch) in
-            let result = listSearch?.results ?? []
-            self.listSearchMovies = result
-            self.downloadDelegate?.didFinishDownload()
-        })
+//        DataAccess.getMovies(named: name, completionHandler: { (listSearch) in
+//            let result = listSearch?.results ?? []
+//            self.listSearchMovies = result
+//            self.downloadDelegate?.didFinishDownload()
+//        })
     }
     
     public func getCover(byIndexPath index: Int) -> String {
-        guard let cover = listPopularMovies?[index].posterPath else {return ""}
+        guard let cover = listPopularMovies?[index].image else {return ""}
         return cover
     }
     
     public func getTitle(byIndexPath index: Int) -> String {
-        guard let title =  listPopularMovies?[index].title else {return ""}
+        guard let title =  listPopularMovies?[index].name else {return ""}
         return title
     }
     
     public func getOverview(byIndexPath index: Int) -> String {
-        guard let overview =  listPopularMovies?[index].overview else {return ""}
+        guard let overview =  listPopularMovies?[index].description else {return ""}
         return overview
     }
     
     public func getPopularity(byIndexPath index: Int) -> String {
-        let popularity =  String(format: "%.1f", listPopularMovies?[index].voteAverage ?? 100)
+        let popularity =  String(format: "%.1f", listPopularMovies?[index].rating ?? 100)
         return popularity
     }
     
@@ -65,8 +74,8 @@ class RootViewModel {
     }
     
     public func getMovieID(byIndexPath index: Int) -> Int {
-        guard let id =  listPopularMovies?[index].id else {return 0}
-        return id
+        guard let id =  listPopularMovies?[index].id_movie else {return 0}
+        return Int(id) ?? 0
     }
     
     

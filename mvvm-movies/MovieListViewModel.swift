@@ -29,32 +29,40 @@ class MovieListViewModel {
     }
     
     func fetchNowPlayingMovies() {
-        DataAccess.getNowPlayingMovies(fromPage: currentPage) { (listMovies) in
-            let result = listMovies?.results ?? []
-            self.nowPlayingList!.append(contentsOf: result)
-            self.downloadDelegate?.didFinishDownload()
+//        DataAccess.getNowPlayingMovies(fromPage: currentPage) { (listMovies) in
+//            let result = listMovies?.results ?? []
+//            self.nowPlayingList!.append(contentsOf: result)
+//            self.downloadDelegate?.didFinishDownload()
+//        }
+        APIService().getNowPlayingMovies { (array) in
+            if let movieList = array as? [Movie] {
+                self.nowPlayingList = movieList
+                self.downloadDelegate?.didFinishDownload()
+            } else {
+                self.nowPlayingList = []
+            }
         }
     }
     
     public func getCover(byIndexPath index: Int) -> String {
-        guard !nowPlayingList!.isEmpty, let cover =  nowPlayingList?[index].posterPath else {return ""}
+        guard !nowPlayingList!.isEmpty, let cover =  nowPlayingList?[index].image else {return ""}
         return cover
     }
     
     public func getTitle(byIndexPath index: Int) -> String {
-        guard !nowPlayingList!.isEmpty, let title =  nowPlayingList?[index].title else {return ""}
+        guard !nowPlayingList!.isEmpty, let title =  nowPlayingList?[index].name else {return ""}
         return title
     }
     
     public func getPopularity(byIndexPath index: Int) -> String {
-        guard !nowPlayingList!.isEmpty, let rating = nowPlayingList?[index].voteAverage else {return ""}
+        guard !nowPlayingList!.isEmpty, let rating = nowPlayingList?[index].rating else {return ""}
         let popularity =  String(format: "%.1f", rating)
         return popularity
     }
     
     public func getMovieID(byIndexPath index: Int) -> Int {
-        guard !nowPlayingList!.isEmpty, let id =  nowPlayingList?[index].id else {return 0}
-        return id
+        guard !nowPlayingList!.isEmpty, let id =  nowPlayingList?[index].id_movie else {return 0}
+        return Int(id) ?? 0
     }
     
     public func getMoviesCount() -> Int {
