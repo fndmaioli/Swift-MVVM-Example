@@ -10,7 +10,7 @@ import Foundation
 
 class DetailViewModel {
     
-    private var movieDetail : MovieDetail?
+    private var movieDetail : Movie?
     
     var downloadDelegate : DownloadDelegate?
     
@@ -19,22 +19,28 @@ class DetailViewModel {
     }
     
     func fetchMovieDetail(withId id: Int){
-        DataAccess.getDetailsMovie(fromId: id) { (movieDetail) in
-            
+//        DataAccess.getDetailsMovie(fromId: id) { (movieDetail) in
+//
+//            guard let movieDetail = movieDetail else {return}
+//
+//            self.movieDetail = movieDetail
+//            self.downloadDelegate?.didFinishDownload()
+//        }
+        APIService().getMovieDetail({ (movieDetail) in
             guard let movieDetail = movieDetail else {return}
             
             self.movieDetail = movieDetail
             self.downloadDelegate?.didFinishDownload()
-        }
+        }, movieID: NSNumber(integerLiteral: id))
     }
     
     public func getCover() -> String {
-        guard let cover =  movieDetail?.posterPath else {return ""}
+        guard let cover =  movieDetail?.image else {return ""}
         return cover
     }
     
     public func getTitle() -> String {
-        guard let title =  movieDetail?.title else {return ""}
+        guard let title =  movieDetail?.name else {return ""}
         return title
     }
     
@@ -44,15 +50,19 @@ class DetailViewModel {
     }
     
     public func getGenres() -> String {
-        guard let genres =  movieDetail?.genres else {return ""}
-        let genresString = genres.map { (genre) -> String in
-            return genre.name ?? ""
-            }.joined(separator: ", ")
-        return genresString 
+//        guard let genres =  movieDetail?.genres else {return ""}
+//        let genresString = genres.map { (genre) -> String in
+//            return genre.name ?? ""
+//            }.joined(separator: ", ")
+//        return genresString
+        guard let genres = movieDetail?.genres as String? else { return "" }
+        return genres
     }
     
     public func getPopularity() -> String {
-        let popularity =  String(format: "%.1f", movieDetail?.voteAverage ?? 100)
-        return popularity
+//        let popularity =  String(format: "%.1f", movieDetail?.voteAverage ?? 100)
+//        return popularity
+        let popularity = movieDetail?.rating
+        return popularity?.stringValue ?? "0"
     }
 }

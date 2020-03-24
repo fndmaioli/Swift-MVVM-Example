@@ -55,9 +55,10 @@ class MovieListViewModel {
     }
     
     public func getPopularity(byIndexPath index: Int) -> String {
-        guard !nowPlayingList!.isEmpty, let rating = nowPlayingList?[index].rating else {return ""}
-        let popularity =  String(format: "%.1f", rating)
-        return popularity
+//        guard !nowPlayingList!.isEmpty, let rating = nowPlayingList?[index].rating else {return ""}
+//        let popularity =  String(format: "%.1f", rating)
+        let popularity = nowPlayingList?[index].rating
+        return popularity?.stringValue ?? "0"
     }
     
     public func getMovieID(byIndexPath index: Int) -> Int {

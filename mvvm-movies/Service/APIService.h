@@ -14,5 +14,7 @@
 - (void)getPopularMovies:(void (^)(NSMutableArray<Movie *>*))completionHandler;
 - (void)getNowPlayingMovies:(void (^)(NSMutableArray<Movie *>*))completionHandler;
 - (void)getMoviesGenres:(void (^)(NSString *))completionHandler movieIDs:(NSArray<NSNumber *> *) movieIds;
+- (void)getMovieDetail:(void (^)(Movie *))completionHandler movieID:(NSNumber *)movieID;
+- (void)getMoviesBySearch:(void (^)(NSMutableArray<Movie *>*))completionHandler searchString:(NSString *)string;
 
 @end

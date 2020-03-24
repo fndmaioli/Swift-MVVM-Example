@@ -35,10 +35,9 @@
             Movie *movieAux = Movie.new;
             
             movieAux.name = popularMovie[@"original_title"];
-            movieAux.descriptiton = popularMovie[@"overview"];
+            movieAux.overview = popularMovie[@"overview"];
             movieAux.rating = popularMovie[@"vote_average"];
             movieAux.image = popularMovie[@"poster_path"];
-            movieAux.genres = popularMovie[@"genre_ids"];
             movieAux.id_movie = popularMovie[@"id"];
             [array addObject:movieAux];
         }
@@ -46,7 +45,6 @@
         if (completionHandler) {
             completionHandler(array);
         }
-        NSLog(@"finished getting movies");
     }] resume];
 }
 
@@ -69,10 +67,9 @@
             Movie *movieAux = Movie.new;
             
             movieAux.name = popularMovie[@"original_title"];
-            movieAux.descriptiton = popularMovie[@"overview"];
+            movieAux.overview = popularMovie[@"overview"];
             movieAux.rating = popularMovie[@"vote_average"];
             movieAux.image = popularMovie[@"poster_path"];
-            movieAux.genres = popularMovie[@"genre_ids"];;
             movieAux.id_movie = popularMovie[@"id"];
             [array addObject:movieAux];
         }
@@ -80,9 +77,44 @@
         if (completionHandler) {
             completionHandler(array);
         }
-        NSLog(@"finished getting movies");
     }] resume];
 }
+
+-(void)getMoviesBySearch:(void (^)(NSMutableArray<Movie *> *))completionHandler searchString:(NSString *)string {
+    
+}
+
+-(void)getMovieDetail:(void (^)(Movie *))completionHandler movieID:(NSNumber *)movieID {
+    NSMutableString *aux1 = @"https://api.themoviedb.org/3/movie/";
+    NSMutableString *aux2 = [aux1 stringByAppendingString:movieID.stringValue];
+    NSString *urlString = [aux2 stringByAppendingString:@"?api_key=0d437200fbd8b26a306c3dc5f9bbbaca&language=en-US"];
+    NSURL *url = [NSURL URLWithString:urlString];
+    
+    [[NSURLSession.sharedSession dataTaskWithURL:url completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        NSError *err;
+        NSDictionary *parsedData = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&err];
+        if (err) {
+            NSLog(@"Failed to serialize into JSON: %@", err);
+            return;
+        }
+        Movie *movieAux = Movie.new;
+        movieAux.name = parsedData[@"original_title"];
+        movieAux.overview = parsedData[@"overview"];
+        movieAux.rating = parsedData[@"vote_average"];
+        movieAux.image = parsedData[@"poster_path"];
+        movieAux.id_movie = parsedData[@"id"];
+        movieAux.genres = @"";
+        for(NSDictionary *genre in parsedData[@"genres"]) {
+            movieAux.genres = [movieAux.genres stringByAppendingString:genre[@"name"]];
+            movieAux.genres = [movieAux.genres stringByAppendingString:@", "];
+        }
+        if (completionHandler) {
+            completionHandler(movieAux);
+        }
+        
+    }] resume];
+}
+
 
 -(void)getMoviesGenres:(void (^)(NSString *))completionHandler movieIDs:(NSArray<NSNumber *> *)movieIds {
     NSString *urlString = @"https://api.themoviedb.org/3/genre/movie/list?api_key=edac55baa5247ecf4089bac4553ff6ed&language=en-US";
@@ -112,7 +144,6 @@
         if (completionHandler) {
             completionHandler(genres);
         }
-        NSLog(@"finished getting movies");
     }] resume];
 }
 

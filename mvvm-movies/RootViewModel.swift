@@ -60,13 +60,14 @@ class RootViewModel {
     }
     
     public func getOverview(byIndexPath index: Int) -> String {
-        guard let overview =  listPopularMovies?[index].description else {return ""}
+        guard let overview =  listPopularMovies?[index].overview else {return ""}
         return overview
     }
     
     public func getPopularity(byIndexPath index: Int) -> String {
-        let popularity =  String(format: "%.1f", listPopularMovies?[index].rating ?? 100)
-        return popularity
+//        let popularity =  String(format: "%.1f", listPopularMovies?[index].rating ?? 100)
+        let popularity = listPopularMovies?[index].rating
+        return popularity?.stringValue ?? "0"
     }
     
     public func getPopularMoviesCount() -> Int {
@@ -74,7 +75,7 @@ class RootViewModel {
     }
     
     public func getMovieID(byIndexPath index: Int) -> Int {
-        guard let id =  listPopularMovies?[index].id_movie else {return 0}
+        guard let id = listPopularMovies?[index].id_movie else {return 0}
         return Int(id) ?? 0
     }
     

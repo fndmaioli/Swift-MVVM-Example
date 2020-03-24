@@ -12,11 +12,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface Movie : NSObject
 
-@property (strong, nonatomic) NSString *id_movie;
+@property (strong, nonatomic) NSNumber *id_movie;
 @property (strong, nonatomic) NSString *name;
-@property (strong, nonatomic) NSString *descriptiton;
+@property (strong, nonatomic) NSString *overview;
 @property (strong, nonatomic) NSNumber *rating;
-@property (strong, nonatomic) NSMutableArray<NSNumber *> *genres;
+@property (strong, nonatomic) NSMutableString *genres;
 @property (strong, nonatomic) NSString *image;
 
 @end
