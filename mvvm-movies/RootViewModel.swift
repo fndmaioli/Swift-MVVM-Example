@@ -44,9 +44,10 @@ class RootViewModel {
     func fetchSearchMovies(name: String){
 //        DataAccess.getMovies(named: name, completionHandler: { (listSearch) in
 //            let result = listSearch?.results ?? []
-//            self.listSearchMovies = result
+////            self.listSearchMovies = result
 //            self.downloadDelegate?.didFinishDownload()
 //        })
+        
     }
     
     public func getCover(byIndexPath index: Int) -> String {
